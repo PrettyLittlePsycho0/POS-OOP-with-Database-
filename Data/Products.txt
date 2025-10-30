@@ -1,0 +1,4 @@
+Laptop~1200~10
+Apple~2~0
+ksdjs~123~0
+Phone~12~10

@@ -1,0 +1,15 @@
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\bin\Debug\net9.0\ShopManagementSystem.exe
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\bin\Debug\net9.0\ShopManagementSystem.deps.json
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\bin\Debug\net9.0\ShopManagementSystem.runtimeconfig.json
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\bin\Debug\net9.0\ShopManagementSystem.dll
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\bin\Debug\net9.0\ShopManagementSystem.pdb
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.AssemblyInfoInputs.cache
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.AssemblyInfo.cs
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.csproj.CoreCompileInputs.cache
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.sourcelink.json
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.dll
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\refint\ShopManagementSystem.dll
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.pdb
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ShopManagementSystem.genruntimeconfig.cache
+D:\Documents\Study Material\UET\Programing\Semsexter 2\OOP\Shop Management System (Layered Approach)\ShopManagementSystem\obj\Debug\net9.0\ref\ShopManagementSystem.dll

@@ -40,6 +40,25 @@ namespace ShopManagementSystem.Product
             }
         }
 
+        public bool Update(ProductModel product)
+        {
+            using (SqlConnection conn = new SqlConnection(DBConnection))
+            {
+                Console.Write(product.ToString());
+                conn.Open();
+                string query = "UPDATE Products SET name=@name, purchasePrice=@purchasePrice, discount=@discount WHERE id=@id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", product.id);
+                cmd.Parameters.AddWithValue("@name", product.name);
+                cmd.Parameters.AddWithValue("@purchasePrice", product.purchasePrice);
+                cmd.Parameters.AddWithValue("@discount", product.discount);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected > 0) return true;
+                return false;
+            }
+        }
+
         public bool Exists(int id)
         {
             using (SqlConnection conn = new SqlConnection(DBConnection))
@@ -58,15 +77,18 @@ namespace ShopManagementSystem.Product
             using (SqlConnection conn = new SqlConnection(DBConnection))
             {
                 conn.Open();
-                string query = "SELECT * FROM Customers WHERE id=@id";
+                string query = "SELECT * FROM Products WHERE id=@id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
                 SqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-                string name = reader["name"].ToString();
-                double purchasePrice = Convert.ToDouble(reader["purchasePrice"]);
-                double discount = Convert.ToDouble(reader["discount"]);
-                return new ProductModel(id, name, purchasePrice, discount);
+                if (reader.Read())
+                {
+                    string name = reader["name"].ToString();
+                    double purchasePrice = Convert.ToDouble(reader["purchasePrice"]);
+                    double discount = (reader["discount"] == DBNull.Value) ? 0.0 : Convert.ToDouble(reader["discount"]);
+                    return new ProductModel(id, name, purchasePrice, discount);
+                }
+                return null;
             }
         }
 

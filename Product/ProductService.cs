@@ -24,7 +24,7 @@ namespace ShopManagementSystem.Product
 
         public void Update(ProductModel updated)
         {
-            for (int i = 0; i < allProducts.Count; i++)
+            /*for (int i = 0; i < allProducts.Count; i++)
             {
                 if (allProducts[i].GetName() == updated.GetName())
                 {
@@ -32,7 +32,8 @@ namespace ShopManagementSystem.Product
                     break;
                 }
             }
-            repo.SaveAll(allProducts);
+            repo.SaveAll(allProducts);*/
+            repoDB.Update(new ProductModel(updated));
         }
 
         public void Delete(int id)

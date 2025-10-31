@@ -120,18 +120,11 @@ namespace ShopManagementSystem.Product
             Console.Clear();
             UpdateProductHeader();
 
-            while (true)
+            string id = ConsoleUtiles.GetInput("\nEnter Product's ID: ", "int");
+            if (id == "exit") return;
+            else
             {
-                Console.Write("Enter Product's Name: ");
-                string name = Console.ReadLine();
-                if (name.ToLower() == "exit") break;
-                if (name == "") continue;
-              
-                else
-                {
-                    StartUpdateLoop(service.GetProductByName(name));
-                    break;
-                }
+                StartUpdateLoop(service.GetCustomerById(int.Parse(id)));
             }
         }
         private void StartUpdateLoop(ProductModel product)

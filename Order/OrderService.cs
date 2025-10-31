@@ -6,19 +6,22 @@ namespace ShopManagementSystem.Order
     {
         private List<OrderModel> allOrders;
         private OrderRepository repo;
+        private OrderRepositoryDB repoDB;
         private CustomerService customerService;
 
         public OrderService()
         {
+            repoDB = new OrderRepositoryDB();
             customerService = new CustomerService();
             repo = new OrderRepository(customerService.GetAll());
             allOrders = repo.GetAll();
         }
 
-        public void Add(OrderModel order)
+        public void Create(OrderModel order)
         {
-            allOrders.Add(new OrderModel(order));
-            repo.Add(order);
+            //allOrders.Add(new OrderModel(order));
+            //repo.Add(order);
+            repoDB.Create(order);
         }
 
         public List<OrderModel> GetAll()

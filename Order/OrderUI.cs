@@ -25,26 +25,20 @@ namespace ShopManagementSystem.Order
         {
             Console.Clear();
             NewOrderHeader();
-            string customerName;
-            while (true)
+            string customerId = ConsoleUtiles.GetInput("Enter Customer's Name: ", "string");
+            if (customerId == "exit") return;
+            if (!customerService.Exists(int.Parse(customerId)))
             {
-                Console.Write("Enter Customer's Name: ");
-                customerName = Console.ReadLine();
-                if (customerName.ToLower() == "exit") return;
-                if (customerName == "") continue;
-                /*if (!customerService.Exists(customerName))
-                {
-                    ConsoleUtiles.PauseForKeyPress("Customer Not Found. Going to Add Customer.");
-                    CustomerUI customerUI = new CustomerUI();
-                    customerUI.AddCustomerUI();
-                }*/
-                break;
+                ConsoleUtiles.PauseForKeyPress("Customer Not Found. Going to Add Customer.");
+                CustomerUI customerUI = new CustomerUI();
+                customerUI.AddCustomerUI();
             }
+            
             Console.Clear();
             NewOrderHeader();
-            CustomerModel customer = customerService.GetCustomerByName(customerName);
+            CustomerModel customer = customerService.GetCustomerById(int.Parse(customerId));
             Console.Write("Customer Details:\n\n" +
-                          "Name: " + customer.GetName() + ", Phone Number: " + customer.GetPhoneNumber() + ", Age: " + customer.GetAge() + ", Address: " + customer.GetAddress() + "\n\n"
+                          "ID: " + customer.id + ", Name: " + customer.GetName() + ", Phone Number: " + customer.GetPhoneNumber() + ", Age: " + customer.GetAge() + ", Address: " + customer.GetAddress() + "\n\n"
             );
             List<OrderItem> items = new List<OrderItem>();
 
@@ -59,7 +53,7 @@ namespace ShopManagementSystem.Order
                     {
                         if (items.Count > 0)
                         {
-                            service.Add(new OrderModel(customerService.GetCustomerByName(customerName), items));
+                            service.Create(new OrderModel(customerService.GetCustomerById(int.Parse(customerId)), items));
                         }
                         return;
                     }
@@ -78,7 +72,7 @@ namespace ShopManagementSystem.Order
                     {
                         if (items.Count != 0)
                         {
-                            service.Add(new OrderModel(customerService.GetCustomerByName(customerName), items));
+                            service.Create(new OrderModel(customerService.GetCustomerById(int.Parse(customerId)), items));
                         }
                         return;
                     }
@@ -90,7 +84,7 @@ namespace ShopManagementSystem.Order
                     }
                     break;
                 }
-                items.Add(new OrderItem(new ProductModel(new ProductService().GetProductByName(productName)), quantity));
+                items.Add(new OrderItem(new ProductModel(new ProductService().GetCustomerById(int.Parse(productName))), quantity));
             }
         }
         private void NewOrderHeader()

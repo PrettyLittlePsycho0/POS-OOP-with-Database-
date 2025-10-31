@@ -5,12 +5,15 @@ namespace ShopManagementSystem.Order
 {
     internal class OrderModel
     {
-        private CustomerModel customer;
-        private List<OrderItem> items;
-        private double totalPrice;
+        public int id { get; set; }
+        public DateTime dateTime { get; private set; }
+        public CustomerModel customer;
+        public List<OrderItem> items;
+        public double totalPrice { get; set; }
 
         public OrderModel(CustomerModel customer, List<OrderItem> items)
         {
+            dateTime = DateTime.Now;
             this.customer = new CustomerModel(customer);
             this.items = new List<OrderItem>();
             for (int i = 0; i < items.Count(); i++)
@@ -22,9 +25,11 @@ namespace ShopManagementSystem.Order
         }
         public OrderModel(OrderModel order)
         {
-            this.customer = new CustomerModel(order.GetCustomer());
+            dateTime = order.dateTime;
+            id = order.id;
+            customer = new CustomerModel(order.GetCustomer());
             items = order.GetOrderItems();
-            this.totalPrice = 0;
+            totalPrice = 0;
             CalculateTotal();
         }
 

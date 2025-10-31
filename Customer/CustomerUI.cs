@@ -236,21 +236,21 @@ namespace ShopManagementSystem.Customer
 
         private void DeleteCustomerUI()
         {
-            string name;
+            string id;
             while (true)
             {
                 Console.Clear();
                 DeleteCustomerHeader();
-                name = ConsoleUtiles.GetInput("Enter Customer's Name: ", "string");
-                if (name == "exit") break;
-                if (!service.Exists(name))
+                id = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
+                if (id == "exit") break;
+                /*if (!service.Exists(id))
                 {
                     ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
                     continue;
-                }
+                }*/
                 break;
             }
-            service.Delete(name);
+            service.Delete(int.Parse(id));
             ConsoleUtiles.PauseForKeyPress("Customer Deleted.");
         }
         private void DeleteCustomerHeader()

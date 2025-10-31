@@ -34,7 +34,7 @@ namespace ShopManagementSystem.Customer
             repo.SaveAll(allCustomers);*/
         }
 
-        public void Delete(string name)
+        public void Delete(int id)
         {
             /*foreach (CustomerModel customer in allCustomers)
             {
@@ -45,6 +45,7 @@ namespace ShopManagementSystem.Customer
                     break;
                 }
             }*/
+            repoDB.Delete(id);
         }
 
         public List<CustomerModel> GetAll()

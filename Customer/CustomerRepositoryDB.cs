@@ -26,6 +26,22 @@ namespace ShopManagementSystem.Customer
             }
         }
 
+        public bool Delete(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(DBConnection))
+            {
+                conn.Open();
+                string query = "DELETE FROM Customers WHERE id = @id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("id", id);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected > 0) return true;
+                return false;
+            }
+        }
+
+
         public List<CustomerModel> GetAll()
         {
             List<CustomerModel> customers = new List<CustomerModel>();

@@ -4,6 +4,7 @@ namespace ShopManagementSystem.Customer
 {
     internal class CustomerModel
     {
+        public int id { get; set; }
         public string name { get; set; }
         public string phoneNumber { get; set; }
         public int age { get; set; }
@@ -11,6 +12,14 @@ namespace ShopManagementSystem.Customer
 
         public CustomerModel(string name, string phoneNumber, int age, string address)
         {
+            this.name = name;
+            this.phoneNumber = phoneNumber;
+            this.age = age;
+            this.address = address;
+        }
+        public CustomerModel(int id, string name, string phoneNumber, int age, string address)
+        {
+            this.id = id;
             this.name = name;
             this.phoneNumber = phoneNumber;
             this.age = age;

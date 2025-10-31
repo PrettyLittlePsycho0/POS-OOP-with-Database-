@@ -49,7 +49,7 @@ namespace ShopManagementSystem.Customer
 
         public List<CustomerModel> GetAll()
         {
-            return allCustomers;
+            return repoDB.GetAll();
         }
 
         public CustomerModel GetCustomerByName(string name)

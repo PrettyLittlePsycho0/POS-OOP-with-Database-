@@ -1,7 +1,0 @@
-Customer 1~021392103~12~asdsadsa
-Customer 2~021392103~14~asdsadsa
-Customer 3~021392103~156~asdsadsa
-Ali~12334~12~asdf
-Ahmed~122334~10~asdasdasidj23
-Talal~03471749160~19~Lahore
-Akbar~1234567~20~Multan

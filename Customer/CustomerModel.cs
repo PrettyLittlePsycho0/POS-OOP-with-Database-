@@ -4,10 +4,10 @@ namespace ShopManagementSystem.Customer
 {
     internal class CustomerModel
     {
-        private string name;
-        private string phoneNumber;
-        private int age;
-        private string address;
+        public string name { get; set; }
+        public string phoneNumber { get; set; }
+        public int age { get; set; }
+        public string address { get; set; }
 
         public CustomerModel(string name, string phoneNumber, int age, string address)
         {

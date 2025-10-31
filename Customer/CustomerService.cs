@@ -7,22 +7,23 @@ namespace ShopManagementSystem.Customer
         private List<CustomerModel> allCustomers;
 
         private CustomerRepository repo;
+        private CustomerRepositoryDB repoDB;
  
         public CustomerService()
         {
+            repoDB = new CustomerRepositoryDB();
             repo = new CustomerRepository();
             allCustomers = repo.GetAll();
         }
 
         public void Add(CustomerModel customer)
         {
-            allCustomers.Add(customer);
-            repo.Add(customer);
+            repoDB.Create(customer);
         }
 
         public void Update(CustomerModel updated)
         {
-            for (int i = 0; i < allCustomers.Count; i++)
+            /*for (int i = 0; i < allCustomers.Count; i++)
             {
                 if (allCustomers[i].GetName() == updated.GetName())
                 {
@@ -30,12 +31,12 @@ namespace ShopManagementSystem.Customer
                     break;
                 }
             }
-            repo.SaveAll(allCustomers);
+            repo.SaveAll(allCustomers);*/
         }
 
         public void Delete(string name)
         {
-            foreach (CustomerModel customer in allCustomers)
+            /*foreach (CustomerModel customer in allCustomers)
             {
                 if (customer.GetName() == name)
                 {
@@ -43,7 +44,7 @@ namespace ShopManagementSystem.Customer
                     repo.SaveAll(allCustomers);
                     break;
                 }
-            }
+            }*/
         }
 
         public List<CustomerModel> GetAll()

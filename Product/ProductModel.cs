@@ -4,9 +4,10 @@ namespace ShopManagementSystem.Product
 {
     internal class ProductModel
     {
-        private string name;
-        private double purchasePrice;
-        private double discount;
+        public int id { get; set; }
+        public string name { get; set; }
+        public double purchasePrice { get; set; }
+        public double discount { get; set; }
 
         public ProductModel(string name, double purchasePrice)
         {
@@ -16,6 +17,14 @@ namespace ShopManagementSystem.Product
         }
         public ProductModel(string name, double purchasePrice, double discount)
         {
+
+            this.name = name;
+            this.purchasePrice = purchasePrice;
+            this.discount = discount;
+        }
+        public ProductModel(int id, string name, double purchasePrice, double discount)
+        {
+            this.id = id;
             this.name = name;
             this.purchasePrice = purchasePrice;
             this.discount = discount;
@@ -23,6 +32,7 @@ namespace ShopManagementSystem.Product
 
         public ProductModel(ProductModel otherProduct)
         {
+            id = otherProduct.id;
             name = otherProduct.name;
             purchasePrice = otherProduct.purchasePrice;
             discount = otherProduct.discount;

@@ -1,10 +1,11 @@
 using Microsoft.Data.SqlClient;
+using ShopManagementSystem.Common;
 
 namespace ShopManagementSystem.Customer
 {
     internal class CustomerRepositoryDB
     {
-        private readonly string DBConnection = "Server=localhost;Database=POS;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly string DBConnection = OtherUtils.GetConnectionString();
 
 
         public bool Create(CustomerModel customer)
@@ -68,10 +69,9 @@ namespace ShopManagementSystem.Customer
                 conn.Open();
                 string query = "SELECT COUNT(1) FROM Customers WHERE id=@id";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("id", id);
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read()) return true;
-                return false;
+                cmd.Parameters.AddWithValue("@id", id);
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
             }
         }
 

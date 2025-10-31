@@ -6,17 +6,20 @@ namespace ShopManagementSystem.Product
     {
         private List<ProductModel> allProducts;
         private ProductRepository repo;
+        private ProductRepositoryDB repoDB;
 
         public ProductService()
         {
+            repoDB = new ProductRepositoryDB();
             repo = new ProductRepository();
             allProducts = repo.GetAll();
         }
 
-        public void Add(ProductModel product)
+        public void Create(ProductModel product)
         {
-            allProducts.Add(product);
-            repo.Add(product);
+            //allProducts.Add(product);
+            //repo.Add(product);
+            repoDB.Create(product);
         }
 
         public void Update(ProductModel updated)

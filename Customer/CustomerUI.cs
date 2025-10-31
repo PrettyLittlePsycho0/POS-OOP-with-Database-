@@ -140,6 +140,14 @@ namespace ShopManagementSystem.Customer
                 if (option.ToLower() == "exit" || option == "0") break;
                 else if (option == "1")
                 {
+                    string name = ConsoleUtiles.GetInput("\nEnter New Name: ", "string");
+                    if (name == "exit") return;
+                    updated.name = name;
+                    service.Update(updated);
+                    lastOption = "Done? Go Back";
+                }
+                else if (option == "2")
+                {
                     string phoneNumber;
                     while (true)
                     {
@@ -152,42 +160,23 @@ namespace ShopManagementSystem.Customer
                         }
                         break;
                     }
-                    updated.SetPhoneNumber(phoneNumber);
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
-                }
-                else if (option == "2")
-                {
-                    int age;
-                    while (true)
-                    {
-                        Console.Write("\nEnter new age: ");
-                        string ageStr = Console.ReadLine();
-                        if (ageStr.ToLower() == "exit") return;
-                        if (ageStr == "") continue;
-                        if (!int.TryParse(ageStr, out age))
-                        {
-                            Console.WriteLine("\nInvalid Input");
-                            continue;
-                        }
-                        break;
-                    }
-                    updated.SetAge(age);
+                    updated.phoneNumber = phoneNumber;
                     service.Update(updated);
                     lastOption = "Done? Go Back";
                 }
                 else if (option == "3")
                 {
-                    string address;
-                    while (true)
-                    {
-                        Console.Write("\nEnter new address: ");
-                        address = Console.ReadLine();
-                        if (address.ToLower() == "exit") return;
-                        if (address == "") continue;
-                        break;
-                    }
-                    updated.SetAddress(address);
+                    string ageStr = ConsoleUtiles.GetInput("\nEnter new age: ", "int");
+                    if (ageStr == "exit") return;
+                    updated.age = int.Parse(ageStr);
+                    service.Update(updated);
+                    lastOption = "Done? Go Back";
+                }
+                else if (option == "4")
+                {
+                    string address = ConsoleUtiles.GetInput("\nEnter new address: ", "string");
+                    if (address == "exit") return;
+                    updated.address = address;
                     service.Update(updated);
                     lastOption = "Done? Go Back";
                 }
@@ -202,11 +191,13 @@ namespace ShopManagementSystem.Customer
             UpdateCustomerHeader();
             Console.WriteLine("What do you want to update?\n");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("1. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's Phone Number (Current: " + customer.GetPhoneNumber() + ")\n");
+            Console.Write("1. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's Name (Current: " + customer.name + ")\n");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("2. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's Age (Current: " + customer.GetAge() + ")\n");
+            Console.Write("2. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's Phone Number (Current: " + customer.phoneNumber + ")\n");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("3. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's Address (Current: " + customer.GetAddress() + ")\n");
+            Console.Write("3. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's age (Current: " + customer.age + ")\n");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("4. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Customer's Address (Current: " + customer.GetAddress() + ")\n");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("0. " + lastOption + "\n\n" +
                               "----------------------------------------------------\n"
@@ -231,19 +222,13 @@ namespace ShopManagementSystem.Customer
 
         private void DeleteCustomerUI()
         {
-            string id;
-            while (true)
+            Console.Clear();
+            DeleteCustomerHeader();
+            string id = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
+            if (id == "exit") return;
+            if (!service.Exists(int.Parse(id)))
             {
-                Console.Clear();
-                DeleteCustomerHeader();
-                id = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
-                if (id == "exit") break;
-                /*if (!service.Exists(id))
-                {
-                    ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
-                    continue;
-                }*/
-                break;
+                ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
             }
             service.Delete(int.Parse(id));
             ConsoleUtiles.PauseForKeyPress("Customer Deleted.");

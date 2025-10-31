@@ -13,5 +13,9 @@ namespace ShopManagementSystem.Common
             }
             return s.Length > 0;
         }
+        public static string GetConnectionString()
+        {
+            return "Server=localhost;Database=POS;Trusted_Connection=True;TrustServerCertificate=True;";
+        }
     }
 }

@@ -101,7 +101,7 @@ namespace ShopManagementSystem.Product
                     }
                     break;
                 }
-                service.Add(new ProductModel(name, purchasePrice, discountPercentage));
+                service.Create(new ProductModel(name, purchasePrice, discountPercentage));
                 break;
             }
         }

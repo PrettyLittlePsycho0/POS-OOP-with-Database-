@@ -35,9 +35,9 @@ namespace ShopManagementSystem.Product
             repo.SaveAll(allProducts);
         }
 
-        public void Delete(string name)
+        public void Delete(int id)
         {
-            foreach (ProductModel product in allProducts)
+            /*foreach (ProductModel product in allProducts)
             {
                 if (product.GetName() == name)
                 {
@@ -45,13 +45,19 @@ namespace ShopManagementSystem.Product
                     repo.SaveAll(allProducts);
                     break;
                 }
-            }
+            }*/
+            repoDB.Delete(id);
         }
 
         public List<ProductModel> GetAll()
         {
             //return allProducts;
             return repoDB.GetAll();
+        }
+
+        public ProductModel GetCustomerById(int id)
+        {
+            return repoDB.GetCustomerById(id);
         }
 
         public ProductModel GetProductByName(string name)
@@ -106,13 +112,14 @@ namespace ShopManagementSystem.Product
             }
             return products;
         }
-        public bool Exists(string name)
+        public bool Exists(int id)
         {
-            foreach (ProductModel product in allProducts)
+            /*foreach (ProductModel product in allProducts)
             {
                 if (product.GetName() == name) return true;
             }
-            return false;
+            return false;*/
+            return repoDB.Exists(id);
         }
     }
 } 

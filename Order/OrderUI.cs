@@ -65,11 +65,7 @@ namespace ShopManagementSystem.Order
                     }
                     ;
                     if (productName == "") continue;
-                    if (!new ProductService().Exists(productName))
-                    {
-                        Console.Write("\nProduct Not Found.");
-                        continue;
-                    }
+                    
                     break;
                 }
 

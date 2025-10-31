@@ -66,11 +66,7 @@ namespace ShopManagementSystem.Product
                 // Name
                 string name = ConsoleUtiles.GetInput("Enter Product's Name: ", "string");
                 if (name == "exit") break;
-                if (service.Exists(name))
-                {
-                    ConsoleUtiles.PauseForKeyPress("Product Already Exists.");
-                    continue;
-                }
+                
 
                 // Purchase Price
                 double purchasePrice;
@@ -130,11 +126,7 @@ namespace ShopManagementSystem.Product
                 string name = Console.ReadLine();
                 if (name.ToLower() == "exit") break;
                 if (name == "") continue;
-                if (!service.Exists(name))
-                {
-                    ConsoleUtiles.PauseForKeyPress("Product Not Found.");
-                    continue;
-                }
+              
                 else
                 {
                     StartUpdateLoop(service.GetProductByName(name));
@@ -219,23 +211,30 @@ namespace ShopManagementSystem.Product
 
         private void DeleteProductUI()
         {
-            string name;
+            /*string name;
             while (true)
             {
-                Console.Clear();
-                DeleteProductHeader();
+                
                 Console.Write("\nEnter Product Name: ");
                 name = Console.ReadLine();
                 if (name.ToLower() == "exit") break;
                 if (name == "") continue;
                 if (!service.Exists(name))
                 {
-                    ConsoleUtiles.PauseForKeyPress("Product Not Found.");
+                    
                     continue;
                 }
                 break;
+            }*/
+            Console.Clear();
+            DeleteProductHeader();
+            string id = ConsoleUtiles.GetInput("\nEnter Product ID: ", "int");
+            if (id == "exit") return;
+            if (!service.Exists(int.Parse(id)))
+            {
+                ConsoleUtiles.PauseForKeyPress("Product Not Found.");
             }
-            service.Delete(name);
+            service.Delete(int.Parse(id));
             ConsoleUtiles.PauseForKeyPress("Product Deleted.");
         }
         private void DeleteProductHeader()

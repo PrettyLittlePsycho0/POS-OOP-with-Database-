@@ -32,12 +32,12 @@ namespace ShopManagementSystem.Order
                 customerName = Console.ReadLine();
                 if (customerName.ToLower() == "exit") return;
                 if (customerName == "") continue;
-                if (!customerService.Exists(customerName))
+                /*if (!customerService.Exists(customerName))
                 {
                     ConsoleUtiles.PauseForKeyPress("Customer Not Found. Going to Add Customer.");
                     CustomerUI customerUI = new CustomerUI();
                     customerUI.AddCustomerUI();
-                }
+                }*/
                 break;
             }
             Console.Clear();

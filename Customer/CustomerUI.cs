@@ -65,11 +65,6 @@ namespace ShopManagementSystem.Customer
                 // Name
                 string name = ConsoleUtiles.GetInput("Enter Customer's Name: ", "string");
                 if (name == "exit") break;
-                if (service.Exists(name))
-                {
-                    ConsoleUtiles.PauseForKeyPress("Customer Already Exists.");
-                    continue;
-                }
 
                 // Phone Number
                 string phoneNumber;
@@ -119,16 +114,16 @@ namespace ShopManagementSystem.Customer
 
             while (true)
             {
-                string name = ConsoleUtiles.GetInput("Enter Customer's Name: ", "string");
-                if (name == "exit") break;
-                if (!service.Exists(name))
+                string id = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
+                if (id == "exit") break;
+                if (!service.Exists(int.Parse(id)))
                 {
                     ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
                     continue;
                 }
                 else
                 {
-                    StartUpdateLoop(service.GetCustomerByName(name));
+                    StartUpdateLoop(service.GetCustomerById(int.Parse(id)));
                     break;
                 }
             }

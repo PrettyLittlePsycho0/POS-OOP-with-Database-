@@ -98,7 +98,7 @@ namespace ShopManagementSystem.Order
                 customerName = Console.ReadLine();
                 if (customerName.ToLower() == "exit") return;
                 if (customerName == "") continue;
-                if (!new CustomerService().Exists(customerName))
+                if (!new CustomerService().Exists(int.Parse(customerName)))
                 {
                     ConsoleUtiles.PauseForKeyPress("Customer Not Found. Going to Add Customer.");
                     CustomerUI customerUI = new CustomerUI();

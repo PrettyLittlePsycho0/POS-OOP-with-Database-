@@ -32,6 +32,7 @@ namespace ShopManagementSystem.Customer
                 }
             }
             repo.SaveAll(allCustomers);*/
+            repoDB.Update(new CustomerModel(updated));
         }
 
         public void Delete(int id)
@@ -51,6 +52,11 @@ namespace ShopManagementSystem.Customer
         public List<CustomerModel> GetAll()
         {
             return repoDB.GetAll();
+        }
+
+        public CustomerModel GetCustomerById(int id)
+        {
+            return repoDB.GetCustomerById(id);
         }
 
         public CustomerModel GetCustomerByName(string name)
@@ -99,13 +105,14 @@ namespace ShopManagementSystem.Customer
             return customers;
         }
 
-        public bool Exists(string name)
+        public bool Exists(int id)
         {
-            foreach (CustomerModel customer in allCustomers)
+            /*foreach (CustomerModel customer in allCustomers)
             {
                 if (customer.GetName() == name) return true;
             }
-            return false;
+            return false;*/
+            return repoDB.Exists(id);
         }
     }
 }

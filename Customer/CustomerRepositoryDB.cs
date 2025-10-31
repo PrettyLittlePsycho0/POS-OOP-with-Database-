@@ -33,7 +33,7 @@ namespace ShopManagementSystem.Customer
                 conn.Open();
                 string query = "DELETE FROM Customers WHERE id = @id";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("id", id);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 int rowsAffected = cmd.ExecuteNonQuery();
                 if (rowsAffected > 0) return true;
@@ -41,6 +41,57 @@ namespace ShopManagementSystem.Customer
             }
         }
 
+        public bool Update(CustomerModel customer)
+        {
+            using (SqlConnection conn = new SqlConnection(DBConnection))
+            {
+                Console.Write(customer.ToString());
+                conn.Open();
+                string query = "UPDATE Customers SET name=@name, phoneNumber=@phoneNumber, age=@age, address=@address WHERE id=@id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", customer.id);
+                cmd.Parameters.AddWithValue("@name", customer.name);
+                cmd.Parameters.AddWithValue("@phoneNumber", customer.phoneNumber);
+                cmd.Parameters.AddWithValue("@age", customer.age);
+                cmd.Parameters.AddWithValue("@address", customer.address);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected > 0) return true;
+                return false;
+            }
+        }
+
+        public bool Exists(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(DBConnection))
+            {
+                conn.Open();
+                string query = "SELECT COUNT(1) FROM Customers WHERE id=@id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read()) return true;
+                return false;
+            }
+        }
+
+        public CustomerModel GetCustomerById(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(DBConnection))
+            {
+                conn.Open();
+                string query = "SELECT * FROM Customers WHERE id=@id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                string name = reader["name"].ToString();
+                string phoneNumber = reader["phoneNumber"].ToString();
+                int age = Convert.ToInt32(reader["age"]);
+                string address = reader["address"].ToString();
+                return new CustomerModel(id, name, phoneNumber, age, address);
+            }
+        }
 
         public List<CustomerModel> GetAll()
         {

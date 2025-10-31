@@ -28,6 +28,7 @@ namespace ShopManagementSystem.Customer
 
         public CustomerModel(CustomerModel otherCustomer)
         {
+            id = otherCustomer.id;
             name = otherCustomer.name;
             phoneNumber = otherCustomer.phoneNumber;
             age = otherCustomer.age;
@@ -36,7 +37,7 @@ namespace ShopManagementSystem.Customer
 
         public override string ToString()
         {
-            return name + '~' + phoneNumber + '~' + age + '~' + address;
+            return id + '~' + name + '~' + phoneNumber + '~' + age + '~' + address;
         }
 
         public string GetInfo()

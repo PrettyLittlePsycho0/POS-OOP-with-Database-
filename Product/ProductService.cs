@@ -50,7 +50,8 @@ namespace ShopManagementSystem.Product
 
         public List<ProductModel> GetAll()
         {
-            return allProducts;
+            //return allProducts;
+            return repoDB.GetAll();
         }
 
         public ProductModel GetProductByName(string name)

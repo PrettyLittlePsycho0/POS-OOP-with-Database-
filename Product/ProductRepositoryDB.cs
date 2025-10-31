@@ -24,5 +24,28 @@ namespace ShopManagementSystem.Product
                 return false;
             }
         }
+
+        public List<ProductModel> GetAll()
+        {
+            List<ProductModel> products = new List<ProductModel>();
+            using (SqlConnection conn = new SqlConnection(DBConnection))
+            {
+                conn.Open();
+                string query = "SELECT * FROM Products";
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["id"]);
+                    string name = reader["name"].ToString();
+                    double purchasePrice = Convert.ToDouble(reader["purchasePrice"]);
+                    double discount = Convert.ToDouble(reader["discount"]);
+                    products.Add(new ProductModel(id, name, purchasePrice, discount));
+                }
+                reader.Close();
+            }
+            return products;
+        }
     }
 }

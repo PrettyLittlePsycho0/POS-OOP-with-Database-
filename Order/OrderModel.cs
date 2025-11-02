@@ -23,6 +23,32 @@ namespace ShopManagementSystem.Order
             this.totalPrice = 0;
             CalculateTotal();
         }
+        public OrderModel(int id, CustomerModel customer, DateTime dateTime, List<OrderItem> items)
+        {
+            this.id = id;
+            this.dateTime = dateTime;
+            this.customer = new CustomerModel(customer);
+            this.items = new List<OrderItem>();
+            for (int i = 0; i < items.Count(); i++)
+            {
+                this.items.Add(new OrderItem(items[i]));
+            }
+            this.totalPrice = 0;
+            CalculateTotal();
+        }
+        public OrderModel(int id, CustomerModel customer, List<OrderItem> items)
+        {
+            this.id = id;
+            dateTime = DateTime.Now;
+            this.customer = new CustomerModel(customer);
+            this.items = new List<OrderItem>();
+            for (int i = 0; i < items.Count(); i++)
+            {
+                this.items.Add(new OrderItem(items[i]));
+            }
+            this.totalPrice = 0;
+            CalculateTotal();
+        }
         public OrderModel(OrderModel order)
         {
             dateTime = order.dateTime;

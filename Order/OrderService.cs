@@ -26,8 +26,8 @@ namespace ShopManagementSystem.Order
 
         public List<OrderModel> GetAll()
         {
-
-            return repo.GetAll();
+            return repoDB.GetAll();
+            //return repo.GetAll();
         }
     }
 }

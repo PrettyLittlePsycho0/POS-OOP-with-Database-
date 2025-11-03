@@ -345,12 +345,7 @@ namespace ShopManagementSystem.Customer
             AdvanceSearchHeader();
             string name = ConsoleUtiles.GetInput("\nEnter Customer's Name: ", "string");
             if (name == "exit") return;
-            CustomerModel customer = service.GetCustomerByName(name);
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Name: " + customer.GetName());
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine("\t" + customer.GetInfo() + "\n");
-            ConsoleUtiles.PauseForKeyPress("");
+            DisplayCustomers(service.GetCustomerByName(name));
         }
         private void SearchCustomersByFirstCharUI()
         {

@@ -18,6 +18,11 @@ namespace ShopManagementSystem.Customer
 
         public bool Create(CustomerModel customer)
         {
+            if (repoDB.GetByPhoneNumber(customer.phoneNumber) != null)
+            {
+                ConsoleUtiles.PauseForKeyPress("Customer with this number already exists.");
+                return false;
+            }
             return repoDB.Create(customer);
         }
 
@@ -59,50 +64,27 @@ namespace ShopManagementSystem.Customer
             return repoDB.GetCustomerById(id);
         }
 
-        public CustomerModel GetCustomerByName(string name)
+        public List<CustomerModel> GetCustomerByName(string name)
         {
-            foreach (CustomerModel customer in allCustomers)
-            {
-                if (customer.GetName() == name) return customer;
-            }
-            return null;
+            return repoDB.GetByName(name);
         }
         public List<CustomerModel> GetCustomerByFirstChar(string ch)
         {
-            List<CustomerModel> customers = new List<CustomerModel>();
-            foreach (CustomerModel customer in allCustomers)
-            {
-                if (customer.GetName().ToLower().StartsWith(ch.ToLower())) customers.Add(customer);
-            }
-            return customers;
+            return repoDB.GetByFirstChar(ch);
         }
         public CustomerModel GetCustomerByPhoneNumber(string phoneNumber)
         {
-            foreach (CustomerModel customer in allCustomers)
-            {
-                if (customer.GetPhoneNumber() == phoneNumber) return customer;
-            }
-            return null;
+            return repoDB.GetByPhoneNumber(phoneNumber);
         }
 
         public List<CustomerModel> GetCustomerByAddress(string address)
         {
-            List<CustomerModel> customers = new List<CustomerModel>();
-            foreach (CustomerModel customer in allCustomers)
-            {
-                if (customer.GetAddress().ToLower() == address.ToLower()) customers.Add(customer);
-            }
-            return customers;
+            return repoDB.GetByAddress(address);
         }
 
         public List<CustomerModel> GetCustomerByAge(int age)
         {
-            List<CustomerModel> customers = new List<CustomerModel>();
-            foreach (CustomerModel customer in allCustomers)
-            {
-                if (customer.GetAge() == age) customers.Add(customer);
-            }
-            return customers;
+            return repoDB.GetByAge(age);
         }
 
         public bool Exists(int id)

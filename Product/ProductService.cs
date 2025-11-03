@@ -58,60 +58,29 @@ namespace ShopManagementSystem.Product
 
         public ProductModel GetProductById(int id)
         {
-            return repoDB.GetCustomerById(id);
+            return repoDB.GetProductById(id);
         }
 
-        public ProductModel GetProductByName(string name)
+        public List<ProductModel> GetProductByName(string name)
         {
-            foreach (ProductModel product in allProducts)
-            {
-                if (product.GetName() == name) return product;
-            }
-            return null;
+            return repoDB.GetByName(name);
         }
 
         public List<ProductModel> GetProductsByPrice(double price)
         {
-            List<ProductModel> products = new List<ProductModel>();
-            foreach (ProductModel product in allProducts)
-            {
-                if (product.GetPurchasePrice() == price) products.Add(product);
-            }
-            return products;
+            return repoDB.GetByPrice(price);
         }
         public List<ProductModel> GetProductsByPriceRange(double from, double to)
         {
-            List<ProductModel> products = new List<ProductModel>();
-            foreach (ProductModel product in allProducts)
-            {
-                if (product.GetPurchasePrice() >= from && product.GetPurchasePrice() <= to) products.Add(product);
-            }
-            return products;
+            return repoDB.GetByPriceRange(from, to);
         }
         public List<ProductModel> GetProductsByPriceDifference(double difference)
         {
-            List<ProductModel> products = new List<ProductModel>();
-            foreach (ProductModel product in allProducts)
-            {
-                if (product.GetPurchasePrice() - product.CalculateSalePrice() == difference) products.Add(product);
-            }
-            return products;
+            return repoDB.GetByPriceDifference(difference);
         }
         public List<ProductModel> GetProductsBySubString(string subString)
         {
-            List<ProductModel> products = new List<ProductModel>();
-            foreach (ProductModel product in allProducts)
-            {
-                foreach (char c in subString.ToLower())
-                {
-                    if (product.GetName().ToLower().Contains(c))
-                    {
-                        products.Add(product);
-                        break;
-                    }
-                }
-            }
-            return products;
+            return repoDB.GetBySubString(subString);
         }
         public bool Exists(int id)
         {

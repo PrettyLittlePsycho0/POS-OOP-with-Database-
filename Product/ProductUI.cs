@@ -334,12 +334,7 @@ namespace ShopManagementSystem.Product
             AdvanceSearchHeader();
             string name = ConsoleUtiles.GetInput("\nEnter Product's Name: ", "string");
             if (name == "exit") return;
-            ProductModel product = service.GetProductByName(name);
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Name: " + product.GetName());
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine("\t" + product.GetInfo() + "\n");
-            ConsoleUtiles.PauseForKeyPress("");
+            DisplayProducts(service.GetProductByName(name));
         }
         private void SearchProductByPriceUI()
         {

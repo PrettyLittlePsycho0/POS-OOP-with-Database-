@@ -17,11 +17,11 @@ namespace ShopManagementSystem.Order
             allOrders = repo.GetAll();
         }
 
-        public void Create(OrderModel order)
+        public bool Create(OrderModel order)
         {
             //allOrders.Add(new OrderModel(order));
             //repo.Add(order);
-            repoDB.Create(order);
+            return repoDB.Create(order);
         }
 
         public List<OrderModel> GetAll()

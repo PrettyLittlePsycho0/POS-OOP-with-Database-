@@ -87,9 +87,16 @@ namespace ShopManagementSystem.Customer
 
                 // Address
                 string address = ConsoleUtiles.GetInput("\nEnter Customer's address: ", "string");
-                if (address == "exit") return; 
+                if (address == "exit") return;
 
-                service.Add(new CustomerModel(name, phoneNumber, age, address));
+                if (service.Create(new CustomerModel(name, phoneNumber, age, address)))
+                {
+                    ConsoleUtiles.PauseForKeyPress("Customer Added Successfully.");
+                }
+                else
+                {
+                    ConsoleUtiles.PauseForKeyPress("Error Creating the Customer.");
+                }
                 break;
             }
         }
@@ -106,14 +113,12 @@ namespace ShopManagementSystem.Customer
             );
             Console.ForegroundColor = ConsoleColor.Black;
         }
-
         private void UpdateCustomerUI()
         {
-            Console.Clear();
-            UpdateCustomerHeader();
-
             while (true)
             {
+                Console.Clear();
+                UpdateCustomerHeader();
                 string id = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
                 if (id == "exit") break;
                 if (!service.Exists(int.Parse(id)))
@@ -142,9 +147,20 @@ namespace ShopManagementSystem.Customer
                 {
                     string name = ConsoleUtiles.GetInput("\nEnter New Name: ", "string");
                     if (name == "exit") return;
+
                     updated.name = name;
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
+                    if (service.Update(updated))
+                    {
+                        lastOption = "Done? Go Back";
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    }
+                    
                 }
                 else if (option == "2")
                 {
@@ -161,24 +177,51 @@ namespace ShopManagementSystem.Customer
                         break;
                     }
                     updated.phoneNumber = phoneNumber;
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
+                    if (service.Update(updated))
+                    {
+                        lastOption = "Done? Go Back";
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    }
                 }
                 else if (option == "3")
                 {
                     string ageStr = ConsoleUtiles.GetInput("\nEnter new age: ", "int");
                     if (ageStr == "exit") return;
                     updated.age = int.Parse(ageStr);
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
+                    if (service.Update(updated))
+                    {
+                        lastOption = "Done? Go Back";
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    }
                 }
                 else if (option == "4")
                 {
                     string address = ConsoleUtiles.GetInput("\nEnter new address: ", "string");
                     if (address == "exit") return;
                     updated.address = address;
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
+                    if (service.Update(updated))
+                    {
+                        lastOption = "Done? Go Back";
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    };
                 }
                 else
                 {
@@ -230,8 +273,14 @@ namespace ShopManagementSystem.Customer
             {
                 ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
             }
-            service.Delete(int.Parse(id));
-            ConsoleUtiles.PauseForKeyPress("Customer Deleted.");
+            else if (service.Delete(int.Parse(id)))
+            {
+                ConsoleUtiles.PauseForKeyPress("Customer Deleted Successfully.");
+            }
+            else
+            {
+                ConsoleUtiles.PauseForKeyPress("Error Deleting the Customer.");
+            }
         }
         private void DeleteCustomerHeader()
         {
@@ -252,7 +301,14 @@ namespace ShopManagementSystem.Customer
             Console.Clear();
             ViewAllCustomersHeader();
             List<CustomerModel> customers = service.GetAll();
-            DisplayCustomers(customers);
+            if (customers.Count == 0)
+            {
+                ConsoleUtiles.PauseForKeyPress("There are no customers in the system yet.");
+            }
+            else
+            {
+                DisplayCustomers(customers);
+            }   
         }
         private void ViewAllCustomersHeader()
         {
@@ -374,7 +430,7 @@ namespace ShopManagementSystem.Customer
             for (int i = 0; i < customers.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(i + 1 + ". Name: " + customers[i].GetName());
+                Console.WriteLine("ID " + customers[i].id + ": Name: " + customers[i].name);
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("\t" + customers[i].GetInfo() + "\n");
             }

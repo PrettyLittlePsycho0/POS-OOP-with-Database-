@@ -23,7 +23,7 @@ namespace ShopManagementSystem.Order
                 else if (option == "1") ViewAllHistory();
                 else if (option == "2")
                 {
-                    ViewHistoryByName();
+                    ViewHistoryById();
                 }
                 else ConsoleUtiles.PauseForKeyPress("Invalid Choice.");
             }
@@ -35,7 +35,7 @@ namespace ShopManagementSystem.Order
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("1. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("View All Orders\n");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("2. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("View Orders by Customer Name\n");
+            Console.Write("2. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("View Orders by Customer ID\n");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("0. Go Back to Main Menu\n\n" +
                               "----------------------------------------------------\n"
@@ -67,17 +67,17 @@ namespace ShopManagementSystem.Order
             for (int i = 0; i < orders.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(i + 1 + ". Customer: " + orders[i].GetCustomer().GetName());
-                for (int j = 0; j < orders[i].GetOrderItems().Count; j++)
+                Console.WriteLine("Order ID " + orders[i].id + ": Customer: " + orders[i].customer.name + ":" + orders[i].id);
+                for (int j = 0; j < orders[i].items.Count; j++)
                 {
                     Console.ForegroundColor = ConsoleColor.Red; Console.Write("\t| ");
                     Console.ForegroundColor = ConsoleColor.Black;
-                    ProductModel product = orders[i].GetOrderItems()[j].GetProduct();
-                    Console.Write("Product Name: " + product.GetName() + ", Quantity: " + orders[i].GetOrderItems()[j].quantity + ", Purchase Price: " + product.GetPurchasePrice() + ", Discount: " + product.GetDiscount());
+                    ProductModel product = orders[i].items[j].product;
+                    Console.Write("Product Name: " + product.name + ", Quantity: " + orders[i].items[j].quantity + ", Purchase Price: $" + product.purchasePrice + ", Discount: " + product.discount + "%");
                     Console.ForegroundColor = ConsoleColor.Red; Console.Write(" | ");
                     Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine("Total: " + orders[i].GetOrderItems()[j].GetProduct().CalculateSalePrice() * orders[i].GetOrderItems()[j].quantity);
-                    grandTotal += orders[i].GetOrderItems()[j].GetProduct().CalculateSalePrice() * orders[i].GetOrderItems()[j].quantity;
+                    Console.WriteLine("Total: " + orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity);
+                    grandTotal += orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity;
                 }
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Grand Total: " + grandTotal + "\n");
@@ -86,43 +86,35 @@ namespace ShopManagementSystem.Order
             ConsoleUtiles.PauseForKeyPress("");
         }
 
-        private void ViewHistoryByName()
+        private void ViewHistoryById()
         {
             orders = orderService.GetAll();
             Console.Clear();
             ViewHistoryHeader();
-            string customerName;
-            while (true)
+            string customerId = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
+            if (customerId == "exit") return;
+            if (!new CustomerService().Exists(int.Parse(customerId)))
             {
-                Console.Write("Enter Customer's Name: ");
-                customerName = Console.ReadLine();
-                if (customerName.ToLower() == "exit") return;
-                if (customerName == "") continue;
-                if (!new CustomerService().Exists(int.Parse(customerName)))
-                {
-                    ConsoleUtiles.PauseForKeyPress("Customer Not Found. Going to Add Customer.");
-                    CustomerUI customerUI = new CustomerUI();
-                    customerUI.AddCustomerUI();
-                }
-                break;
+                ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
+                return;
             }
             double grandTotal = 0;
             for (int i = 0; i < orders.Count; i++)
             {
-                if (orders[i].GetCustomer().GetName() == customerName)
+                if (orders[i].customer.name == customerId)
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine(i + 1 + ". Customer: " + orders[i].GetCustomer().GetName());
-                    for (int j = 0; j < orders[i].GetOrderItems().Count; j++)
+                    Console.WriteLine("Order ID " + orders[i].id + ": Customer: " + orders[i].customer.name + ":" + orders[i].id);
+                    for (int j = 0; j < orders[i].items.Count; j++)
                     {
                         Console.ForegroundColor = ConsoleColor.Red; Console.Write("\t| ");
                         Console.ForegroundColor = ConsoleColor.Black;
-                        ProductModel product = orders[i].GetOrderItems()[j].GetProduct();
-                        Console.Write("Product Name: " + product.GetName() + ", Quantity: " + orders[i].GetOrderItems()[j].quantity + ", Purchase Price: " + product.GetPurchasePrice() + ", Discount: " + product.GetDiscount());
+                        ProductModel product = orders[i].items[j].product;
+                        Console.Write("Product Name: " + product.name + ", Quantity: " + orders[i].items[j].quantity + ", Purchase Price: $" + product.purchasePrice + ", Discount: " + product.discount + "%");
                         Console.ForegroundColor = ConsoleColor.Red; Console.Write(" | ");
                         Console.ForegroundColor = ConsoleColor.Black;
-                        Console.WriteLine("Total: " + orders[i].GetOrderItems()[j].GetProduct().CalculateSalePrice() * orders[i].GetOrderItems()[j].quantity);
-                        grandTotal += orders[i].GetOrderItems()[j].GetProduct().CalculateSalePrice() * orders[i].GetOrderItems()[j].quantity;
+                        Console.WriteLine("Total: " + orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity);
+                        grandTotal += orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity;
                     }
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Grand Total: " + grandTotal + "\n");

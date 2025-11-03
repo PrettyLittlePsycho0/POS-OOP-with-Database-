@@ -10,6 +10,14 @@ namespace ShopManagementSystem.Customer
         public int age { get; set; }
         public string address { get; set; }
 
+        public CustomerModel(int id)
+        {
+            this.id = id;
+            name = "Removed_Customer";
+            phoneNumber = "";
+            age = 0;
+            address = "";
+        }
         public CustomerModel(string name, string phoneNumber, int age, string address)
         {
             this.name = name;

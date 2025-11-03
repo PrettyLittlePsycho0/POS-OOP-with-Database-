@@ -19,13 +19,12 @@ namespace ShopManagementSystem.Order
                 SqlTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    string insertOrderQuery = "INSERT INTO Orders (customerId, orderDate, totalPrice) " +
-                                            "VALUES (@customerId, @orderDate, @totalPrice); " +
+                    string insertOrderQuery = "INSERT INTO Orders (customerId, orderDate) " +
+                                            "VALUES (@customerId, @orderDate); " +
                                             "SELECT SCOPE_IDENTITY();";
                     SqlCommand cmd = new SqlCommand(insertOrderQuery, conn, transaction);
                     cmd.Parameters.AddWithValue("@customerId", order.customer.id);
                     cmd.Parameters.Add("@orderDate", SqlDbType.DateTime).Value = order.dateTime;
-                    cmd.Parameters.AddWithValue("@totalPrice", order.totalPrice);
 
                     object result = cmd.ExecuteScalar();
                     int newOrderId = 0;
@@ -40,8 +39,8 @@ namespace ShopManagementSystem.Order
                         throw new InvalidOperationException("Failed to retrieve the new Order ID.");
                     }
 
-                    string insertItemQuery = "INSERT INTO OrderItems (orderId, productId, quantity, purchasePrice, discount, totalPrice) " +
-                                            "VALUES (@orderId, @productId, @quantity, @purchasePrice, @discount, @totalPrice)";
+                    string insertItemQuery = "INSERT INTO OrderItems (orderId, productId, quantity, purchasePrice, discount) " +
+                                            "VALUES (@orderId, @productId, @quantity, @purchasePrice, @discount)";
 
                     foreach (OrderItem item in order.items)
                     {
@@ -52,7 +51,6 @@ namespace ShopManagementSystem.Order
                         cmd2.Parameters.AddWithValue("@quantity", item.quantity);
                         cmd2.Parameters.AddWithValue("@purchasePrice", item.product.purchasePrice);
                         cmd2.Parameters.AddWithValue("@discount", item.product.discount);
-                        cmd2.Parameters.AddWithValue("@totalPrice", item.totalPrice);
 
                         int rowsAffected = cmd2.ExecuteNonQuery();
                         if (rowsAffected == 0)
@@ -84,9 +82,18 @@ namespace ShopManagementSystem.Order
                 while (reader.Read())
                 {
                     int id = Convert.ToInt32(reader["id"]);
-                    CustomerModel customer = new CustomerService().GetCustomerById(Convert.ToInt32(reader["customerId"]));
+                    int customerId = Convert.ToInt32(reader["customerId"]);
                     DateTime dateTime = Convert.ToDateTime(reader["orderDate"]);
-                    orders.Add(new OrderModel(id, customer, dateTime, new List<OrderItem>()));
+                    if (new CustomerService().Exists(customerId))
+                    {
+                        CustomerModel customer = new CustomerModel(new CustomerService().GetCustomerById(customerId));
+                        orders.Add(new OrderModel(id, customer, dateTime, new List<OrderItem>()));
+                    }
+                    else
+                    {
+                        orders.Add(new OrderModel(id, customerId, dateTime, new List<OrderItem>()));
+                    }
+                    
                 }
                 reader.Close();
                 foreach (OrderModel order in orders)
@@ -97,7 +104,7 @@ namespace ShopManagementSystem.Order
                     SqlDataReader reader2 = cmd2.ExecuteReader();
                     while (reader2.Read())
                     {
-                        ProductModel product = new ProductModel(new ProductService().GetCustomerById(Convert.ToInt32(reader2["productId"])));
+                        ProductModel product = new ProductModel(new ProductService().GetProductById(Convert.ToInt32(reader2["productId"])));
                         product.purchasePrice = Convert.ToDouble(reader2["purchasePrice"]);
                         product.discount = Convert.ToDouble(reader2["discount"]);
                         int quantity = Convert.ToInt32(reader2["quantity"]);

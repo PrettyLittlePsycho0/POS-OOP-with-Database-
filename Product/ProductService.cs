@@ -15,14 +15,14 @@ namespace ShopManagementSystem.Product
             allProducts = repo.GetAll();
         }
 
-        public void Create(ProductModel product)
+        public bool Create(ProductModel product)
         {
             //allProducts.Add(product);
             //repo.Add(product);
-            repoDB.Create(product);
+            return repoDB.Create(product);
         }
 
-        public void Update(ProductModel updated)
+        public bool Update(ProductModel updated)
         {
             /*for (int i = 0; i < allProducts.Count; i++)
             {
@@ -33,10 +33,10 @@ namespace ShopManagementSystem.Product
                 }
             }
             repo.SaveAll(allProducts);*/
-            repoDB.Update(new ProductModel(updated));
+            return repoDB.Update(new ProductModel(updated));
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             /*foreach (ProductModel product in allProducts)
             {
@@ -47,7 +47,7 @@ namespace ShopManagementSystem.Product
                     break;
                 }
             }*/
-            repoDB.Delete(id);
+            return repoDB.Delete(id);
         }
 
         public List<ProductModel> GetAll()
@@ -56,7 +56,7 @@ namespace ShopManagementSystem.Product
             return repoDB.GetAll();
         }
 
-        public ProductModel GetCustomerById(int id)
+        public ProductModel GetProductById(int id)
         {
             return repoDB.GetCustomerById(id);
         }

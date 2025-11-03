@@ -25,7 +25,7 @@ namespace ShopManagementSystem.Order
         {
             Console.Clear();
             NewOrderHeader();
-            string customerId = ConsoleUtiles.GetInput("Enter Customer's Name: ", "string");
+            string customerId = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
             if (customerId == "exit") return;
             if (!customerService.Exists(int.Parse(customerId)))
             {
@@ -38,53 +38,52 @@ namespace ShopManagementSystem.Order
             NewOrderHeader();
             CustomerModel customer = customerService.GetCustomerById(int.Parse(customerId));
             Console.Write("Customer Details:\n\n" +
-                          "ID: " + customer.id + ", Name: " + customer.GetName() + ", Phone Number: " + customer.GetPhoneNumber() + ", Age: " + customer.GetAge() + ", Address: " + customer.GetAddress() + "\n\n"
+                          "ID: " + customer.id + ": Name: " + customer.name + ", Phone Number: " + customer.phoneNumber + ", Age: " + customer.age + ", Address: " + customer.address + "\n\n"
             );
             List<OrderItem> items = new List<OrderItem>();
 
             while (true)
             {
-                string productName;
-                while (true)
+                string productId = ConsoleUtiles.GetInput("\nEnter Product's ID: ", "int");
+                
+                if (productId == "exit")
                 {
-                    Console.Write("\nEnter Product's Name: ");
-                    productName = Console.ReadLine();
-                    if (productName.ToLower() == "exit")
+                    if (items.Count > 0)
                     {
-                        if (items.Count > 0)
+                        if (service.Create(new OrderModel(customerService.GetCustomerById(int.Parse(customerId)), items)))
                         {
-                            service.Create(new OrderModel(customerService.GetCustomerById(int.Parse(customerId)), items));
+                            ConsoleUtiles.PauseForKeyPress("Order Created Successfully.");
                         }
-                        return;
+                        else
+                        {
+                            ConsoleUtiles.PauseForKeyPress("Error Creating the order.");
+                        }
                     }
-                    ;
-                    if (productName == "") continue;
-                    
-                    break;
+                    return;
                 }
-
-                int quantity;
-                while (true)
+                if (!new ProductService().Exists(int.Parse(productId)))
                 {
-                    Console.Write("Enter Quantity: ");
-                    string quantityStr = Console.ReadLine();
-                    if (quantityStr.ToLower() == "exit")
-                    {
-                        if (items.Count != 0)
-                        {
-                            service.Create(new OrderModel(customerService.GetCustomerById(int.Parse(customerId)), items));
-                        }
-                        return;
-                    }
-                    if (quantityStr == "") continue;
-                    if (!int.TryParse(quantityStr, out quantity))
-                    {
-                        Console.WriteLine("\nInvalid Input!\n");
-                        continue;
-                    }
-                    break;
+                    ConsoleUtiles.PauseForKeyPress("Product not found.");
+                    continue;
                 }
-                items.Add(new OrderItem(new ProductModel(new ProductService().GetCustomerById(int.Parse(productName))), quantity));
+                string quantityStr = ConsoleUtiles.GetInput("Enter Quantity: ", "int");
+                if (quantityStr == "exit")
+                {
+                    if (items.Count > 0)
+                    {
+                        if (service.Create(new OrderModel(customerService.GetCustomerById(int.Parse(customerId)), items)))
+                        {
+                            ConsoleUtiles.PauseForKeyPress("Order Created Successfully.");
+                        }
+                        else
+                        {
+                            ConsoleUtiles.PauseForKeyPress("Error Creating the order.");
+                        }
+                    }
+                    return;
+                }
+                
+                items.Add(new OrderItem(new ProductModel(new ProductService().GetProductById(int.Parse(productId))), int.Parse(quantityStr)));
             }
         }
         private void NewOrderHeader()

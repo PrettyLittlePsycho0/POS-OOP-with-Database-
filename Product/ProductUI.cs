@@ -58,47 +58,57 @@ namespace ShopManagementSystem.Product
 
         private void AddProductUI()
         {
+            Console.Clear();
+            AddProductHeader();
+
+            // Name
+            string name = ConsoleUtiles.GetInput("Enter Product's Name: ", "string");
+            if (name == "exit") return;
+            
+
+            // Purchase Price
+            double purchasePrice;
             while (true)
             {
-                Console.Clear();
-                AddProductHeader();
-
-                // Name
-                string name = ConsoleUtiles.GetInput("Enter Product's Name: ", "string");
-                if (name == "exit") break;
-                
-
-                // Purchase Price
-                double purchasePrice;
-                while (true)
-                {
-                    string purchasePriceStr = ConsoleUtiles.GetInput("\nEnter Product's purchase price: ", "double");
-                    if (purchasePriceStr == "exit") return;
-                    purchasePrice = double.Parse(purchasePriceStr);
-                    break;
-                }
-
-                // Discount
-                double discountPercentage = 0;
-                while (true)
-                {
-                    string choice = ConsoleUtiles.GetInput("\nDo you want to add a discount for this product? (Yes/No): ", "string");
-                    if (choice == "exit") break;
-                    if (choice.ToLower() == "no") break;
-                    else if (choice.ToLower() == "yes")
-                    {
-                        while (true)
-                        {
-                            string discountPercentageStr = ConsoleUtiles.GetInput("\nEnter discount percentage: ", "double");
-                            if (discountPercentageStr == "exit") return;
-                            discountPercentage = double.Parse(discountPercentageStr);
-                            break;
-                        }
-                    }
-                    break;
-                }
-                service.Create(new ProductModel(name, purchasePrice, discountPercentage));
+                string purchasePriceStr = ConsoleUtiles.GetInput("\nEnter Product's purchase price: ", "double");
+                if (purchasePriceStr == "exit") return;
+                purchasePrice = double.Parse(purchasePriceStr);
                 break;
+            }
+
+            // Discount
+            double discountPercentage = 0;
+            while (true)
+            {
+                string choice = ConsoleUtiles.GetInput("\nDo you want to add a discount for this product? (Yes/No): ", "string");
+                if (choice == "exit") break;
+                if (choice.ToLower() == "no") break;
+                else if (choice.ToLower() == "yes")
+                {
+                    while (true)
+                    {
+                        string discountPercentageStr = ConsoleUtiles.GetInput("\nEnter discount percentage: ", "double");
+                        if (discountPercentageStr == "exit") return;
+                        discountPercentage = double.Parse(discountPercentageStr);
+                        if (discountPercentage > 100)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nInvalid percentage.");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+            if (service.Create(new ProductModel(name, purchasePrice, discountPercentage)))
+            {
+                ConsoleUtiles.PauseForKeyPress("Product Added Successfully.");
+            }
+            else
+            {
+                ConsoleUtiles.PauseForKeyPress("Error creating the product.");
             }
         }
         private void AddProductHeader()
@@ -124,7 +134,7 @@ namespace ShopManagementSystem.Product
             if (id == "exit") return;
             else
             {
-                StartUpdateLoop(service.GetCustomerById(int.Parse(id)));
+                StartUpdateLoop(service.GetProductById(int.Parse(id)));
             }
         }
         private void StartUpdateLoop(ProductModel product)
@@ -139,47 +149,87 @@ namespace ShopManagementSystem.Product
                 if (option.ToLower() == "exit" || option == "0") break;
                 else if (option == "1")
                 {
-                    double purchasePrice;
-                    while (true)
+                    string name = ConsoleUtiles.GetInput("\nEnter New Name: ", "string");
+                    if (name == "exit") return;
+
+                    updated.name = name;
+                    if (service.Update(updated))
                     {
-                        string purchasePriceStr = ConsoleUtiles.GetInput("\nEnter new purchase price: ", "double");
-                        if (purchasePriceStr== "exit") return;
-                        purchasePrice = double.Parse(purchasePriceStr);
-                        break;
+                        lastOption = "Done? Go Back";
                     }
-                    updated.SetPurchasePrice(purchasePrice);
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    }
                 }
                 else if (option == "2")
+                {
+                    string purchasePriceStr = ConsoleUtiles.GetInput("\nEnter new purchase price: ", "double");
+                    if (purchasePriceStr == "exit") return;
+                    double purchasePrice = double.Parse(purchasePriceStr);
+
+                    updated.purchasePrice = purchasePrice;
+                    if (service.Update(updated))
+                    {
+                        lastOption = "Done? Go Back";
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    }
+                }
+                else if (option == "3")
                 {
                     double discountPercentage;
                     while (true)
                     {
                         string discountPercentageStr = ConsoleUtiles.GetInput("\nEnter new discount percentage: ", "double");
-                        if (discountPercentageStr== "exit") return;
+                        if (discountPercentageStr == "exit") return;
                         discountPercentage = double.Parse(discountPercentageStr);
+                        if (discountPercentage > 100)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nInvalid percentage.");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            continue;
+                        }
                         break;
                     }
-                    updated.SetDiscount(discountPercentage);
-                    service.Update(updated);
-                    lastOption = "Done? Go Back";
+                    updated.discount = discountPercentage;
+                    if (service.Update(updated))
+                    {
+                        lastOption = "Done? Go Back";
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThere was an error updating the attribute.");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        continue;
+                    }
                 }
                 else
                 {
                     ConsoleUtiles.PauseForKeyPress("Invalid Choice!");
                 }
             }
-            service.Update(updated);
         }
         private string UpdateMenu(ProductModel product, string lastOption)
         {
             UpdateProductHeader();
             Console.WriteLine("What do you want to update?\n");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("1. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Product Price (Current: $" + product.GetPurchasePrice() + ")\n");
+            Console.Write("1. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Product Name (Current: " + product.name + ")\n");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("2. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Product Discount (Current: " + product.GetDiscount() + ")\n");
+            Console.Write("2. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Product Price (Current: $" + product.purchasePrice + ")\n");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("3. "); Console.ForegroundColor = ConsoleColor.Black; Console.WriteLine("Product Discount (Current: " + product.discount + ")\n");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("0. " + lastOption + "\n\n" +
                               "----------------------------------------------------\n"
@@ -204,21 +254,6 @@ namespace ShopManagementSystem.Product
 
         private void DeleteProductUI()
         {
-            /*string name;
-            while (true)
-            {
-                
-                Console.Write("\nEnter Product Name: ");
-                name = Console.ReadLine();
-                if (name.ToLower() == "exit") break;
-                if (name == "") continue;
-                if (!service.Exists(name))
-                {
-                    
-                    continue;
-                }
-                break;
-            }*/
             Console.Clear();
             DeleteProductHeader();
             string id = ConsoleUtiles.GetInput("\nEnter Product ID: ", "int");
@@ -227,8 +262,14 @@ namespace ShopManagementSystem.Product
             {
                 ConsoleUtiles.PauseForKeyPress("Product Not Found.");
             }
-            service.Delete(int.Parse(id));
-            ConsoleUtiles.PauseForKeyPress("Product Deleted.");
+            if (service.Delete(int.Parse(id)))
+            {
+                ConsoleUtiles.PauseForKeyPress("Product Deleted Successfully.");
+            }
+            else
+            {
+                ConsoleUtiles.PauseForKeyPress("Error Creating the Product.");
+            }
         }
         private void DeleteProductHeader()
         {
@@ -248,7 +289,15 @@ namespace ShopManagementSystem.Product
         {
             Console.Clear();
             ViewAllProductsHeader();
-            DisplayProducts(service.GetAll());
+            List<ProductModel> products = service.GetAll();
+            if (products.Count == 0)
+            {
+                ConsoleUtiles.PauseForKeyPress("There are no products in the system yet.");
+            }
+            else
+            {
+                DisplayProducts(products);
+            } 
         }
         private void ViewAllProductsHeader()
         {
@@ -362,7 +411,7 @@ namespace ShopManagementSystem.Product
             for (int i = 0; i < products.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(i + 1 + ". Name: " + products[i].GetName());
+                Console.WriteLine("ID " + products[i].id + ": Name: " + products[i].name);
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("\t" + products[i].GetInfo() + "\n");
             }

@@ -17,5 +17,10 @@ namespace ShopManagementSystem.Common
         {
             return "Server=localhost;Database=POS;Trusted_Connection=True;TrustServerCertificate=True;";
         }
+
+        public static void DisplayList()
+        {
+            
+        }
     }
 }

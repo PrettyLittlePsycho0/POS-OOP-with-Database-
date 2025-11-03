@@ -16,12 +16,12 @@ namespace ShopManagementSystem.Customer
             allCustomers = repo.GetAll();
         }
 
-        public void Add(CustomerModel customer)
+        public bool Create(CustomerModel customer)
         {
-            repoDB.Create(customer);
+            return repoDB.Create(customer);
         }
 
-        public void Update(CustomerModel updated)
+        public bool Update(CustomerModel updated)
         {
             /*for (int i = 0; i < allCustomers.Count; i++)
             {
@@ -32,10 +32,10 @@ namespace ShopManagementSystem.Customer
                 }
             }
             repo.SaveAll(allCustomers);*/
-            repoDB.Update(new CustomerModel(updated));
+            return repoDB.Update(new CustomerModel(updated));
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             /*foreach (CustomerModel customer in allCustomers)
             {
@@ -46,7 +46,7 @@ namespace ShopManagementSystem.Customer
                     break;
                 }
             }*/
-            repoDB.Delete(id);
+            return repoDB.Delete(id);
         }
 
         public List<CustomerModel> GetAll()

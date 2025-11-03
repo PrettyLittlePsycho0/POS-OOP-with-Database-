@@ -9,12 +9,6 @@ namespace ShopManagementSystem.Product
         public double purchasePrice { get; set; }
         public double discount { get; set; }
 
-        public ProductModel(string name, double purchasePrice)
-        {
-            this.name = name;
-            this.purchasePrice = purchasePrice;
-            discount = 0;
-        }
         public ProductModel(string name, double purchasePrice, double discount)
         {
 

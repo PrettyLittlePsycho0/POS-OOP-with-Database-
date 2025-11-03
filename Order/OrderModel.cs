@@ -9,15 +9,17 @@ namespace ShopManagementSystem.Order
         public DateTime dateTime { get; private set; }
 
         public int customerId { get; set; }
+        public string customerName { get; set; }
         public CustomerModel customer;
         public List<OrderItem> items;
         public double totalPrice { get; set; }
 
-        public OrderModel(int id, int customerId, DateTime dateTime, List<OrderItem> items)
+        public OrderModel(int id, int customerId, string customerName, DateTime dateTime, List<OrderItem> items)
         {
             this.id = id;
             this.customerId = customerId;
-            this.customer = new CustomerModel(customerId);
+            this.customerName = customerName;
+            this.customer = new CustomerModel(this.customerId, this.customerName);
             this.dateTime = dateTime;
             this.items = new List<OrderItem>();
             for (int i = 0; i < items.Count; i++)

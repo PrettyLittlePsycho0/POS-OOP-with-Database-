@@ -29,5 +29,9 @@ namespace ShopManagementSystem.Order
             return repoDB.GetAll();
             //return repo.GetAll();
         }
+        public List<OrderModel> GetOrdersByCustomerId(int customerId)
+        {
+            return repoDB.GetOrdersByCustomerId(customerId);
+        }
     }
 }

@@ -67,7 +67,7 @@ namespace ShopManagementSystem.Order
             for (int i = 0; i < orders.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("Order ID " + orders[i].id + ": Customer: " + orders[i].customer.name + ":" + orders[i].id);
+                Console.WriteLine("Order ID " + orders[i].id + ": Customer: " + orders[i].customer.name + ":" + orders[i].dateTime);
                 for (int j = 0; j < orders[i].items.Count; j++)
                 {
                     Console.ForegroundColor = ConsoleColor.Red; Console.Write("\t| ");
@@ -88,7 +88,7 @@ namespace ShopManagementSystem.Order
 
         private void ViewHistoryById()
         {
-            orders = orderService.GetAll();
+            
             Console.Clear();
             ViewHistoryHeader();
             string customerId = ConsoleUtiles.GetInput("Enter Customer's ID: ", "int");
@@ -98,28 +98,26 @@ namespace ShopManagementSystem.Order
                 ConsoleUtiles.PauseForKeyPress("Customer Not Found.");
                 return;
             }
-            double grandTotal = 0;
+            orders = orderService.GetOrdersByCustomerId(int.Parse(customerId));
+             double grandTotal = 0;
             for (int i = 0; i < orders.Count; i++)
             {
-                if (orders[i].customer.name == customerId)
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Order ID " + orders[i].id + ": Customer: " + orders[i].customer.name + ":" + orders[i].dateTime);
+                for (int j = 0; j < orders[i].items.Count; j++)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("Order ID " + orders[i].id + ": Customer: " + orders[i].customer.name + ":" + orders[i].id);
-                    for (int j = 0; j < orders[i].items.Count; j++)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red; Console.Write("\t| ");
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        ProductModel product = orders[i].items[j].product;
-                        Console.Write("Product Name: " + product.name + ", Quantity: " + orders[i].items[j].quantity + ", Purchase Price: $" + product.purchasePrice + ", Discount: " + product.discount + "%");
-                        Console.ForegroundColor = ConsoleColor.Red; Console.Write(" | ");
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.WriteLine("Total: " + orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity);
-                        grandTotal += orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity;
-                    }
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Grand Total: " + grandTotal + "\n");
-                    grandTotal = 0;
+                    Console.ForegroundColor = ConsoleColor.Red; Console.Write("\t| ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    ProductModel product = orders[i].items[j].product;
+                    Console.Write("Product Name: " + product.name + ", Quantity: " + orders[i].items[j].quantity + ", Purchase Price: $" + product.purchasePrice + ", Discount: " + product.discount + "%");
+                    Console.ForegroundColor = ConsoleColor.Red; Console.Write(" | ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine("Total: " + orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity);
+                    grandTotal += orders[i].items[j].product.CalculateSalePrice() * orders[i].items[j].quantity;
                 }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Grand Total: " + grandTotal + "\n");
+                grandTotal = 0;
             }
             ConsoleUtiles.PauseForKeyPress("");
         }
